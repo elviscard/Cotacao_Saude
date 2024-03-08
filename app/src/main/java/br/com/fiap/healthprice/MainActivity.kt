@@ -98,7 +98,7 @@ fun ScaffoldExample(modifier: Modifier) {
                     IconButton(onClick = { /* do something */ }) {
                         Icon(
                             Icons.Filled.Email,
-                            contentDescription = "Adicionado",
+                            contentDescription = "Adicionado2",
                         )
                     }
                 }
