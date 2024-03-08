@@ -67,14 +67,15 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun ScaffoldExample(modifier: Modifier) {
     var presses by remember { mutableIntStateOf(0) }
-
     Scaffold(
         topBar = {
             BottomAppBar(
                 actions = {
-                    IconButton(onClick = { /* do something */ },
-                        Align =  {
-                        Icon(Icons.Filled.Check, contentDescription = "Localized description")
+                    IconButton(onClick = { /* do something */ }){
+                        Icon(
+                            Icons.Filled.Check
+                            , contentDescription = "Localized description",
+                        )
                     }
                     IconButton(onClick = { /* do something */ }) {
                         Icon(
@@ -92,6 +93,12 @@ fun ScaffoldExample(modifier: Modifier) {
                         Icon(
                             Icons.Filled.Email,
                             contentDescription = "Localized description",
+                        )
+                    }
+                    IconButton(onClick = { /* do something */ }) {
+                        Icon(
+                            Icons.Filled.Email,
+                            contentDescription = "Adicionado",
                         )
                     }
                 }
