@@ -141,7 +141,7 @@ fun FilledCardExample() {
         modifier = Modifier.size(width = 240.dp, height = 100.dp)
     ) {
         Text(
-            text = "Exemplo de Card preenchido",
+            text = "Exemplo de Card preenchido bem grande",
             modifier = Modifier.padding(16.dp),
             textAlign = TextAlign.Center,
         )
