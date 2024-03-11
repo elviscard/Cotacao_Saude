@@ -1,136 +1,149 @@
 package br.com.fiap.healthprice
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Typography
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import br.com.fiap.healthprice.ui.theme.HealthPriceTheme
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             HealthPriceTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                Scaffold(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.background)
+                ) {
+                    ScaffoldContent()
                 }
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    // Variável de estado para armazenar o texto digitado pelo usuário
-    var textFieldValue by remember { mutableStateOf("") }
-    // Variável de estado para armazenar os nomes digitados pelo usuário
-    var names by remember { mutableStateOf(listOf<String>()) }
+fun ScaffoldContent() {
+    var presses by remember { mutableStateOf(0) }
+    var medicationName by remember { mutableStateOf("") }
+    var medicationSpecifications by remember { mutableStateOf("") }
 
-    // Definições de estilo de texto subtitle1 e body1
-    val subtitle1 = TextStyle(
-        fontSize = 18.sp,
-        // Outras propriedades de estilo, se desejar
-    )
-
-    val body1 = TextStyle(
-        fontSize = 16.sp,
-        // Outras propriedades de estilo, se desejar
-    )
-
-    // Define o tema do aplicativo
-    HealthPriceTheme {
-        val typography = Typography(
-            headlineLarge = subtitle1, // Define o estilo subtitle1
-            bodyLarge = body1 // Define o estilo body1
-        )
-
-        MaterialTheme(typography = typography) { // Aplica a tipografia definida ao MaterialTheme
-            Column(
-                modifier = modifier.padding(16.dp)
-            ) {
-                Card(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        OutlinedTextField(
-                            value = textFieldValue,
-                            onValueChange = {
-                                // Atualize o valor da variável de estado com o novo texto digitado pelo usuário
-                                textFieldValue = it
-                            },
-                            label = { Text("Digite algo...") }
-                        )
-                    }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text("Haelth Price")
                 }
-
-                // Botão para enviar o texto digitado
-                Button(
-                    onClick = {
-                        // Adiciona o nome digitado à lista de nomes
-                        names = names + textFieldValue
-                        // Limpa o texto digitado para o próximo nome
-                        textFieldValue = ""
-                    },
-                    modifier = Modifier.padding(top = 16.dp)
-                ) {
-                    Text(text = "Enviar")
-                }
-
-                // Exibe cada nome em um Card separado
-                names.forEach { name ->
-                    Card(
-                        modifier = Modifier.fillMaxWidth().padding(top = 16.dp)
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(16.dp)
-                        ) {
-                            Text(
-                                text = "Nome:",
-                                style = MaterialTheme.typography.headlineLarge // Utiliza o estilo subtitle1 do MaterialTheme
-                            )
-                            Text(
-                                text = name,
-                                style = MaterialTheme.typography.bodyLarge // Utiliza o estilo body1 do MaterialTheme
-                            )
-                        }
-                    }
-                }
-
+            )
+        },
+        bottomBar = {
+            BottomAppBar() {
                 Text(
-                    text = "Hello $name!",
-                    modifier = modifier
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    text = "Bottom app bar",
                 )
             }
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = { presses++ }) {
+                Icon(Icons.Default.Add, contentDescription = "Add")
+            }
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Text(
+                modifier = Modifier.padding(8.dp),
+                text =
+                """
+                    Olá usuário, obrigado por usar nosso aplicativo. Procura remédios mais baratos? 
+                    Envie sua receita ou digite o nome do remédio e suas especificações no local 
+                    abaixo e aguarde a resposta da farmácia.
+                """.trimIndent(),
+            )
+
+            // Campo de texto para inserir o nome do medicamento
+            OutlinedTextField(
+                value = medicationName,
+                onValueChange = { medicationName = it },
+                label = { Text("Nome do medicamento") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            // Campo de texto para inserir as especificações do medicamento
+            OutlinedTextField(
+                value = medicationSpecifications,
+                onValueChange = { medicationSpecifications = it },
+                label = { Text("Especificações do medicamento") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            // Botão para enviar a solicitação
+            Button(
+                onClick = {
+                    // Aqui você pode adicionar a lógica para enviar a solicitação para a farmácia
+                    // Por exemplo, você pode enviar as informações para um serviço web
+                },
+                modifier = Modifier.align(Alignment.End)
+            ) {
+                Text("Enviar solicitação")
+            }
+
+            // Exemplo de cartão
+            FilledCardExample()
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    HealthPriceTheme {
-        Greeting("Android")
+fun FilledCardExample() {
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        ),
+        modifier = Modifier.size(width = 240.dp, height = 100.dp)
+    ) {
+        Text(
+            text = "de Card preenchido bem grande",
+            modifier = Modifier.padding(16.dp),
+            textAlign = TextAlign.Center,
+        )
     }
 }
-
